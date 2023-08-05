@@ -10,3 +10,8 @@
 .form_control.error span {
     color: red;
 }
+.errorSummary{
+    width: 170px;
+    color: red;
+    background-color: #fff;
+}
