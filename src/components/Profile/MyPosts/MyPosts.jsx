@@ -5,15 +5,11 @@ import {Field, reduxForm} from "redux-form";
 import {requiredField, requiredFieldLength} from "../../../utils/validators/validators";
 import TextArea from "../../common/FormsControls/FormsControls";
 
-const MyPosts = (props) => {
-    let postsElements =
-        props.posts.map(p => <Post message={p.message} likesCount={p.likesCount}/>);
-
+const MyPosts = React.memo((props) => {
+    let postsElements = props.posts.map(p => <Post message={p.message} likesCount={p.likesCount}/>);
     let onSubmit = (value) => {
         props.addPost(value.addPost);
     }
-
-
     return (
         <div className={s.postsBlock}>
             <h3>My posts</h3>
@@ -25,7 +21,7 @@ const MyPosts = (props) => {
             </div>
         </div>
     )
-}
+})
 
 export default MyPosts;
 const letVal = requiredFieldLength(30)
