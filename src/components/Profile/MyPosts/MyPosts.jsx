@@ -4,7 +4,7 @@ import Post from './Post/Post';
 import {Field, reduxForm} from "redux-form";
 import {requiredField, requiredFieldLength} from "../../../utils/validators/validators";
 import TextArea from "../../common/FormsControls/FormsControls";
-
+//88 pureComponent
 const MyPosts = React.memo((props) => {
     let postsElements = props.posts.map(p => <Post message={p.message} likesCount={p.likesCount}/>);
     let onSubmit = (value) => {
