@@ -10,12 +10,12 @@ export const TextArea = ({input, meta, ...props}) => {
         </div>
     );
 };
-export const Input = ({input, meta, ...props}) => {
-    let hasError = meta.touched && meta.error
+export const Input = ({input, meta: {touched, error}, ...props}) => {
+    let hasError = touched && error
     return (
         <div className={`${s.form_control} ${hasError ? s.error : ''}`}>
             <div><input {...input}{...props}/></div>
-            {hasError && <span>{meta.error}</span>}
+            {hasError && <span>{error}</span>}
         </div>
     );
 };
