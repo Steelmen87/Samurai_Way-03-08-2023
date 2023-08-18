@@ -6,7 +6,7 @@ import {requiredField, requiredFieldLength} from "../../../utils/validators/vali
 import TextArea from "../../common/FormsControls/FormsControls";
 //88 pureComponent
 const MyPosts = React.memo((props) => {
-    let postsElements = props.posts.map(p => <Post message={p.message} likesCount={p.likesCount}/>);
+    let postsElements = props.posts.map(p => <Post key={p.id} message={p.message} likesCount={p.likesCount}/>);
     let onSubmit = (value) => {
         props.addPost(value.addPost);
     }
