@@ -6,7 +6,7 @@ import {Redirect} from "react-router-dom";
 import {reduxForm} from "redux-form";
 import {Field} from "redux-form";
 import TextArea from "../common/FormsControls/FormsControls";
-import {requiredField, requiredFieldLength} from "../../utils/validators/validators";
+import {requiredField, requiredFieldLength} from "../../utils/validators/validators.ts";
 
 const Dialogs = (props) => {
 

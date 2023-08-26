@@ -2,7 +2,7 @@ import React from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
 import {Field, reduxForm} from "redux-form";
-import {requiredField, requiredFieldLength} from "../../../utils/validators/validators";
+import {requiredField, requiredFieldLength} from "../../../utils/validators/validators.ts";
 import TextArea from "../../common/FormsControls/FormsControls";
 //88 pureComponent
 const MyPosts = React.memo((props) => {

@@ -1,9 +1,9 @@
 import React from 'react';
 import {Field, reduxForm} from "redux-form";
 import {Input} from "../common/FormsControls/FormsControls";
-import {requiredField} from "../../utils/validators/validators";
+import {requiredField} from "../../utils/validators/validators.ts";
 import {connect} from "react-redux";
-import {setLoginData} from "../../redux/auth-reducer";
+import {login} from "../../redux/auth-reducer";
 import {Redirect} from "react-router-dom";
 import style from './../common/FormsControls/FormsControls.module.css'
 
@@ -50,4 +50,4 @@ const mapStateToProps = (state) => {
         isAuth: state.auth.isAuth
     }
 }
-export default connect(mapStateToProps, {setLoginData})(Login);
+export default connect(mapStateToProps, {setLoginData: login})(Login);
