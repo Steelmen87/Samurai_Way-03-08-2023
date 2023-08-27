@@ -8,13 +8,26 @@ import {connect, Provider} from "react-redux";
 import {compose} from "redux";
 import {initializeApp} from "./redux/app-reducer";
 import Preloader from "./components/common/Preloader/Preloader";
-import store from './redux/redux-store'
+import store, {AppStateType} from './redux/redux-store'
 import {withSuspense} from "./hoc/withSuspense";
 
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const LoginPage = React.lazy(() => import('./components/Login/Login'));
 //100 done
+/*
+
+type MapStateToPropsType = {
+    initialized: boolean
+}
+type MapDispatchToPropsType = {
+    initializeApp: () => void
+
+}
+type OwnPropsType = {}
+type PropsType = MapStateToPropsType & MapDispatchToPropsType & OwnPropsType
+*/
+
 class App extends React.Component {
     catchAllUnhandledErrors = (reason, promise) => {
         alert("some Error")
@@ -22,10 +35,12 @@ class App extends React.Component {
 
     componentDidMount() {
         this.props.initializeApp();
+        //@ts-ignore
         window.addEventListener("unhandledrejection", this.catchAllUnhandledErrors)
     }
 
     componentWillUnmount() {
+        //@ts-ignore
         window.removeEventListener("unhandledrejection", this.catchAllUnhandledErrors)
     }
 
@@ -52,17 +67,19 @@ class App extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state )  => ({
     initialized: state.app.initialized
 })
-const MainApp = compose(
+const MainApp = compose (
     withRouter,
     connect(mapStateToProps, {initializeApp}))(App);
 const SamuraiJSApp = () => {
-    return <HashRouter>
-        <Provider store={store}>
-            <MainApp/>
-        </Provider>
-    </HashRouter>
+    return (
+        <HashRouter>
+
+            <Provider store={store}>
+                <MainApp/>
+            </Provider>
+        </HashRouter>)
 }
 export default SamuraiJSApp;
