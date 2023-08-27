@@ -12,15 +12,35 @@ import {
     getTotalUsersCount,
     getUsersSelectorS
 } from "../../redux/users-selectors";
+import {AppStateType} from "../../redux/redux-store";
+import {UserType} from "../../types/types";
 
+type MapStateToPropsType = {
+    currentPage: number
+    pageSize: number
+    totalUsersCount: number
+    followingInProgress: Array<number>
+    isFetching: boolean
+    users: Array<UserType>
 
-class UsersContainer extends React.Component {
+}
+type MapDispatchToPropsType = {
+    getUsers: (currentPage: number, pageSize: number) => void
+    unfollow: (userId: number) => void
+    follow: (userId: number) => void
+    setCurrentPage: (currentPage: number) => void
+    toggleFollowingProgress: (isFetching: boolean, userId: number) => void
+}
+type OwnPropsType = {}
+type PropsType = MapStateToPropsType & MapDispatchToPropsType & OwnPropsType
+
+class UsersContainer extends React.Component<PropsType, any> {
     componentDidMount() {
         const {currentPage, pageSize} = this.props;
         this.props.getUsers(currentPage, pageSize);
     }
 
-    onPageChanged = (pageNumber) => {
+    onPageChanged = (pageNumber: number) => {
         const {pageSize} = this.props;
         this.props.getUsers(pageNumber, pageSize);
     }
@@ -41,7 +61,7 @@ class UsersContainer extends React.Component {
     }
 }
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
         users: getUsersSelectorS(state),
         pageSize: getPageSize(state),
@@ -52,7 +72,13 @@ let mapStateToProps = (state) => {
     }
 }
 
-
+//<TStateProps = {}, TDispatchProps = {}, TOwnProps = {}, State = DefaultState>
 export default compose(
-    connect(mapStateToProps, {follow, unfollow, setCurrentPage, toggleFollowingProgress, getUsers: requestUsers})
+    connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsType, AppStateType>(mapStateToProps, {
+        follow,
+        unfollow,
+        setCurrentPage,
+        toggleFollowingProgress,
+        getUsers: requestUsers
+    })
 )(UsersContainer)

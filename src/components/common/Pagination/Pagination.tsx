@@ -2,11 +2,24 @@ import React, {useState} from 'react';
 import styles from "./Paginator.module.css";
 import cn from "classnames";
 
-let Pagination = ({totalItemsCount, pageSize, currentPage, onPageChanged, portionSize = 10}) => {
-
+type PropsType = {
+    totalItemsCount: number
+    pageSize: number
+    currentPage: number
+    onPageChanged: (p: number) => void
+    portionSize?: number
+}
+const Pagination: React.FC<PropsType> = (props) => {
+    const {
+        totalItemsCount,
+        pageSize,
+        currentPage,
+        onPageChanged,
+        portionSize = 10
+    } = props;
     let pagesCount = Math.ceil(totalItemsCount / pageSize);
 
-    let pages = [];
+    let pages: Array<number> = [];
     for (let i = 1; i <= pagesCount; i++) {
         pages.push(i);
     }
@@ -20,7 +33,7 @@ let Pagination = ({totalItemsCount, pageSize, currentPage, onPageChanged, portio
             .map(p => {
                 return <span
                     key={p}
-                    className={cn({[styles.selectedPage]:currentPage === p},styles.pageNumber)}
+                    className={cn({[styles.selectedPage]: currentPage === p}, styles.pageNumber)}
                     onClick={(e) => {
                         onPageChanged(p);
                     }}>{p}</span>
