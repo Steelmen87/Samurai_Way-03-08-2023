@@ -76,14 +76,14 @@ type stopSubmitType = (form: string, errors?: FormErrors<any, any>) => FormActio
 
 type DispatchThunkType = ThunkAction<Promise<void>, AppStateType, unknown, actionType>
 
-export const getUserProfile = (userId: string): DispatchThunkType =>
+export const getUserProfile = (userId: number): DispatchThunkType =>
     async (dispatch) => {
         let response = await usersAPI.getProfile(userId)
 
         dispatch(setUserProfile(response.data));
     }
 
-export const getStatus = (userId: string): DispatchThunkType =>
+export const getStatus = (userId: number): DispatchThunkType =>
     async (dispatch) => {
         let response = await profileAPI.getStatus(userId)
         dispatch(setStatus(response.data));

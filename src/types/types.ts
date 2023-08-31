@@ -1,23 +1,23 @@
 export type contactsType = {
-    github: string
-    vk: string
-    facebook: string
-    instagram: string
-    twitter: string
-    website: string
-    youtube: string
-    mainLink: string
+    github: string| null
+    vk: string| null
+    facebook: string| null
+    instagram: string| null
+    twitter: string| null
+    website: string| null
+    youtube: string| null
+    mainLink: string| null
 }
 export type photosType = {
     small: string | null
     large: string | null
 }
 export type profileType = {
-    aboutMe:string
+    aboutMe:string| null
     userId: number
     lookingForAJob: boolean
-    lookingForAJobDescription: string
-    fullName: string
+    lookingForAJobDescription: string| null
+    fullName: string| null
     contacts: contactsType
     photos: photosType
 }

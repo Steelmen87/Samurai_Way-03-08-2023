@@ -44,7 +44,6 @@ const Login = (props) => {
     </div>
 }
 const mapStateToProps = (state) => {
-    debugger
     return {
         captchaUrl: state.auth.captchaUrl,
         isAuth: state.auth.isAuth

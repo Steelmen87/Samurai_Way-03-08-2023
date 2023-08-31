@@ -49,7 +49,7 @@ type ProfileDataPropsType = {
 }
 
 export const ProfileData: React.FC<ProfileDataPropsType> = ({profile, isOwner, callBack}) => {
-    debugger
+
     return <div>
         {isOwner && <div>
             <button onClick={callBack}>edit</button>
