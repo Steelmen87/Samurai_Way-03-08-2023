@@ -1,5 +1,5 @@
 import React, {FormEvent} from 'react';
-import {InjectedFormProps, Field, reduxForm} from "redux-form";
+import {Field, reduxForm} from "redux-form";
 import TextArea, {Input} from "../../common/FormsControls/FormsControls";
 import s from './ProfileInfo.module.css'
 import style from '../../common/FormsControls/FormsControls.module.css'
