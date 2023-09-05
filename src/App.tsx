@@ -1,35 +1,29 @@
 import React from 'react';
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
-import {HashRouter, Redirect, Route, Switch, withRouter} from "react-router-dom";
+import {Redirect, Route, Switch, withRouter} from "react-router-dom";
 import UsersContainer from "./components/Users/UsersContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
-import {connect, Provider} from "react-redux";
+import {connect} from "react-redux";
 import {compose} from "redux";
 import {initializeApp} from "./redux/app-reducer";
 import Preloader from "./components/common/Preloader/Preloader";
-import store from './redux/redux-store'
+import {AppStateType} from './redux/redux-store'
 import {withSuspense} from "./hoc/withSuspense";
 
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
+
 const LoginPage = React.lazy(() => import('./components/Login/Login'));
 //100 done
-/*
 
-type MapStateToPropsType = {
-    initialized: boolean
-}
-type MapDispatchToPropsType = {
+type MapPropsType = ReturnType<typeof mapStateToProps>
+type DispatchPropsType = {
     initializeApp: () => void
-
 }
-type OwnPropsType = {}
-type PropsType = MapStateToPropsType & MapDispatchToPropsType & OwnPropsType
-*/
 
-class App extends React.Component {
-    catchAllUnhandledErrors = (reason, promise) => {
+class App extends React.Component<MapPropsType & DispatchPropsType, any> {
+    catchAllUnhandledErrors = (e: PromiseRejectionEvent) => {
         alert("some Error")
     }
 
@@ -67,19 +61,18 @@ class App extends React.Component {
     }
 }
 
-const mapStateToProps = (state )  => ({
+const mapStateToProps = (state: AppStateType) => ({
     initialized: state.app.initialized
 })
-const MainApp = compose (
+const MainApp = compose<React.ComponentType>(
     withRouter,
     connect(mapStateToProps, {initializeApp}))(App);
-const SamuraiJSApp = () => {
-    return (
-        <HashRouter>
 
-            <Provider store={store}>
-                <MainApp/>
-            </Provider>
-        </HashRouter>)
-}
-export default SamuraiJSApp;
+/*const SamuraiJSApp: React.FC = () => {
+    return <HashRouter>
+        <Provider store={store}>
+            <MainApp/>
+        </Provider>
+    </HashRouter>
+}*/
+export default MainApp;

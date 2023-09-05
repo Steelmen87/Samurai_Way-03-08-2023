@@ -41,5 +41,5 @@ export const sendMessageCreator = (value: string) => ({type: 'SN/SEND_MESSAGE', 
 
 export default dialogsReducer;
 
-type initialStateType = typeof initialState
+export type initialStateType = typeof initialState
 type ActionType = ReturnType<typeof sendMessageCreator>

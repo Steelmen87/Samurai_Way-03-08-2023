@@ -20,7 +20,7 @@
     "react-redux": "^6.0.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "3.0.1",
-    "react-test-renderer": "16.8.6",
+    "react-test-renderer": "^18.2.0",
     "redux": "^4.0.1",
     "redux-form": "^8.3.10",
     "redux-thunk": "^2.3.0",
@@ -50,6 +50,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-test-renderer": "^18.0.1",
     "typescript": "^5.1.6"
   }
 }

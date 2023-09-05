@@ -1,7 +1,11 @@
 import React from 'react';
 import s from './Post.module.css';
 
-const Post = (props) => {
+type propsType = {
+    message: string
+    likesCount: number
+}
+const Post: React.FC<propsType> = (props) => {
     return (
         <div className={s.item}>
             <img alt={"alt img"}

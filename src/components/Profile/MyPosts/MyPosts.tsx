@@ -1,13 +1,20 @@
 import React from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
-import {Field, reduxForm} from "redux-form";
-import {requiredField, requiredFieldLength} from "../../../utils/validators/validators.ts";
+import {Field, InjectedFormProps, reduxForm} from "redux-form";
+import {requiredField, requiredFieldLength} from "../../../utils/validators/validators";
 import TextArea from "../../common/FormsControls/FormsControls";
+import {postType} from "../../../types/types";
 //88 pureComponent
-const MyPosts = React.memo((props) => {
+
+type MyPostsType = {
+    posts: Array<postType>
+    addPost: (str: string) => void
+}
+
+const MyPosts = React.memo((props: MyPostsType) => {
     let postsElements = props.posts.map(p => <Post key={p.id} message={p.message} likesCount={p.likesCount}/>);
-    let onSubmit = (value) => {
+    let onSubmit = (value: any) => {
         props.addPost(value.addPost);
     }
     return (
@@ -25,7 +32,9 @@ const MyPosts = React.memo((props) => {
 
 export default MyPosts;
 const letVal = requiredFieldLength(30)
-export const AddPostForm = (props) => {
+
+
+export const AddPostForm: React.FC<InjectedFormProps<FormDataType, loginOwnProps> & loginOwnProps> = (props) => {
     return (
         <>
             <form onSubmit={props.handleSubmit}>
@@ -44,6 +53,10 @@ export const AddPostForm = (props) => {
             </form>
         </>)
 }
-export const AddPostReduxForm = reduxForm({
+type FormDataType = {
+    addPost: string
+}
+type loginOwnProps = {}
+export const AddPostReduxForm = reduxForm<FormDataType, loginOwnProps>({
     form: 'postForm'
 })(AddPostForm)

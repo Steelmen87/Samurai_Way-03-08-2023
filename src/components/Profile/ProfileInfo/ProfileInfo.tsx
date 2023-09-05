@@ -14,8 +14,8 @@ const ProfileInfo: React.FC<propsType> = ({profile, status, updateStatus, isOwne
     if (!profile) {
         return <Preloader/>
     }
-    const onMainPhotoSelected = (e: ChangeEvent<any>) => {
-        if (e.target.files.length) {
+    const onMainPhotoSelected = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length) {
             savePhoto(e.target.files[0])
         }
     }

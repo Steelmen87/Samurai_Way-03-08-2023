@@ -2,9 +2,17 @@ import * as serviceWorker from './serviceWorker';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import SamuraiJSApp from "./App";
+import MainApp from "./App";
+import {Provider} from "react-redux";
+import {HashRouter} from "react-router-dom";
+import store from './redux/redux-store'
 
-ReactDOM.render(<SamuraiJSApp/>, document.getElementById('root'));
+ReactDOM.render(
+    <Provider store={store}>
+        <HashRouter>
+            <MainApp/>
+        </HashRouter>
+    </Provider>, document.getElementById('root'));
 
 
 // API

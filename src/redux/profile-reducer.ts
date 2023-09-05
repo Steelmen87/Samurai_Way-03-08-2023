@@ -15,7 +15,6 @@ let initialState = {
     ] as Array<postType>,
     profile: null as profileType | null,
     status: "",
-    newPostText: ""
 };
 export type initialStateType = typeof initialState
 
