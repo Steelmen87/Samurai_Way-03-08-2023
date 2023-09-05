@@ -17,7 +17,7 @@ const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileCo
 const LoginPage = React.lazy(() => import('./components/Login/Login'));
 //100 done
 
-type MapPropsType = ReturnType<typeof mapStateToProps>
+
 type DispatchPropsType = {
     initializeApp: () => void
 }
@@ -64,6 +64,7 @@ class App extends React.Component<MapPropsType & DispatchPropsType, any> {
 const mapStateToProps = (state: AppStateType) => ({
     initialized: state.app.initialized
 })
+type MapPropsType = ReturnType<typeof mapStateToProps>
 const MainApp = compose<React.ComponentType>(
     withRouter,
     connect(mapStateToProps, {initializeApp}))(App);

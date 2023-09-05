@@ -4,7 +4,7 @@ import {Dispatch} from "react";
 import {AppStateType} from "./redux-store";
 import {ThunkAction} from "redux-thunk";
 import {usersAPI} from "../api/users-api";
-
+import {ResponseType} from './../api/api'
 
 let initialState = {
     users: [] as Array<UserType>,
@@ -14,7 +14,7 @@ let initialState = {
     isFetching: true,
     followingInProgress: [] as Array<number>
 };
-type initialStateType = typeof initialState
+export type initialStateType = typeof initialState
 const usersReducer = (state = initialState, action: ActionType): initialStateType => {
     switch (action.type) {
         case 'FOLLOW':
@@ -81,10 +81,10 @@ export const requestUsers = (currentPage: number, pageSize: number): ThunkType =
         //@ts-ignore
         dispatch(setTotalUsersCount(data.totalCount));
     }
-const followUnfollowFlow = async (dispatch: Dispatch<ActionType>, userId: number, apiMethod: any, actionCreator: (userId: number) => followSuccessType | unfollowSuccessType) => {
+const followUnfollowFlow = async (dispatch: Dispatch<ActionType>, userId: number, apiMethod: (userId: number) => Promise<ResponseType>, actionCreator: (userId: number) => followSuccessType | unfollowSuccessType) => {
     dispatch(toggleFollowingProgress(true, userId));
     const response = await apiMethod(userId)
-    if (response.data.resultCode === 0) {
+    if (response.resultCode === 0) {
         dispatch(actionCreator(userId));
     }
     dispatch(toggleFollowingProgress(false, userId));
@@ -95,11 +95,11 @@ export const follow = (userId: number) =>
         let apiMethod = usersAPI.follow.bind(usersAPI)
         let actionCreator = followSuccess;
 
-        followUnfollowFlow(dispatch, userId, apiMethod, actionCreator)
+        await followUnfollowFlow(dispatch, userId, apiMethod, actionCreator)
     }
 export const unfollow = (userId: number) => async (dispatch: any) => {
     //@ts-ignore
-    followUnfollowFlow(dispatch, userId, usersAPI.unfollow.bind(usersAPI), unfollowSuccess)
+    await followUnfollowFlow(dispatch, userId, usersAPI.unfollow.bind(usersAPI), unfollowSuccess)
 }
 
 export default usersReducer;
