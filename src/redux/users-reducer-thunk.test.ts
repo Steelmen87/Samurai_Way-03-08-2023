@@ -1,9 +1,9 @@
-import {follow} from "./users-reducer";
+import {follow, followSuccess, toggleFollowingProgress} from "./users-reducer";
 import {usersAPI} from "../api/users-api";
 import {ResponseType, ResultCodesEnum} from './../api/api'
 
 jest.mock("../api/users-api");
-const userApiMock = usersAPI;
+const userApiMock = usersAPI as jest.Mocked<typeof usersAPI>;
 const result: ResponseType = {
     messages: [],
     resultCode: ResultCodesEnum.Success,
@@ -19,4 +19,5 @@ test('user-reducer-thunk test 1', async () => {
 
     await thunk(dispatchMock)
     expect(dispatchMock).toBeCalledTimes(3)
+
 })
