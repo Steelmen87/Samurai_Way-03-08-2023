@@ -12,9 +12,11 @@ let initialState = {
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: true,
-    followingInProgress: [] as Array<number>
+    followingInProgress: [] as Array<number>,
+    filter: {term: '', friend: null as null | boolean}
 };
 export type initialStateType = typeof initialState
+export type FilterType = typeof initialState.filter
 const usersReducer = (state = initialState, action: ActionType): initialStateType => {
     switch (action.type) {
         case 'FOLLOW':
@@ -47,6 +49,12 @@ const usersReducer = (state = initialState, action: ActionType): initialStateTyp
                     : state.followingInProgress.filter(id => id !== action.userId)
             }
         }
+        case "SET_FILTER": {
+            return {
+                ...state,
+                filter: action.payload
+            }
+        }
         default:
             return state;
     }
@@ -57,6 +65,10 @@ export const followSuccess = (userId: number) => ({type: 'FOLLOW', userId} as co
 export const unfollowSuccess = (userId: number) => ({type: 'UNFOLLOW', userId} as const)
 export const setUsers = (users: Array<UserType>) => ({type: 'SET_USERS', users} as const)
 export const setCurrentPage = (currentPage: number) => ({type: 'SET_CURRENT_PAGE', currentPage} as const)
+export const setFilter = (filter:FilterType) => ({
+    type: 'SET_FILTER',
+    payload: filter
+} as const)
 type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionType>
 
 export const setTotalUsersCount = (totalUsersCount: number) => ({
@@ -71,12 +83,13 @@ export const toggleFollowingProgress = (isFetching: boolean, userId: number) => 
 } as const)
 
 
-export const requestUsers = (currentPage: number, pageSize: number): ThunkType =>
+export const requestUsers = (currentPage: number, pageSize: number, filter:FilterType): ThunkType =>
     async (dispatch, getState) => {
         dispatch(toggleIsFetching(true));
-        const data = await usersAPI.getUsers(currentPage, pageSize)
+        const data = await usersAPI.getUsers(currentPage, pageSize, filter.term,filter.friend)
         dispatch(toggleIsFetching(false));
         dispatch(setUsers(data.items));
+        dispatch(setFilter(filter));
         dispatch(setCurrentPage(currentPage));
         //@ts-ignore
         dispatch(setTotalUsersCount(data.totalCount));
@@ -110,9 +123,11 @@ export type setCurrentPageType = ReturnType<typeof setCurrentPage>
 export type setTotalUsersCountType = ReturnType<typeof setTotalUsersCount>
 export type toggleIsFetchingType = ReturnType<typeof toggleIsFetching>
 export type toggleFollowingProgressType = ReturnType<typeof toggleFollowingProgress>
+export type setFilterType = ReturnType<typeof setFilter>
 
 type ActionType =
-    followSuccessType
+    setFilterType
+    | followSuccessType
     | unfollowSuccessType
     | setUsersType
     | setCurrentPageType

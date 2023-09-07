@@ -11,11 +11,11 @@ type PropsType = {
     follow: (userId: number) => void
 }
 
-let User:React.FC<PropsType> = (props) => {
+let User: React.FC<PropsType> = (props) => {
     const {user, followingInProgress, unfollow, follow} = props;
     return <div>
 
-                <span>
+        <span>
                     <div>
                        <NavLink to={'/profile/' + user.id}>
                         <img src={user.photos.small != null ? user.photos.small : userPhoto}
@@ -51,3 +51,5 @@ let User:React.FC<PropsType> = (props) => {
     </div>
 }
 export default User;
+
+

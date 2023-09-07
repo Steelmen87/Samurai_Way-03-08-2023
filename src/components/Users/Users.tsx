@@ -2,6 +2,8 @@ import React from 'react';
 import Pagination from "../common/Pagination/Pagination";
 import User from './User'
 import {UserType} from "../../types/types";
+import {UserFormikForm} from "./UsersSearchForm";
+import {FilterType} from "../../redux/users-reducer";
 
 type PropsType = {
     currentPage: number
@@ -12,6 +14,7 @@ type PropsType = {
     unfollow: (userId: number) => void
     follow: (userId: number) => void
     onPageChanged: (p: number) => void
+    onFilterChanged:(filter: FilterType)=>void
 }
 let Users: React.FC<PropsType> = (props) => {
     const {
@@ -25,6 +28,9 @@ let Users: React.FC<PropsType> = (props) => {
         onPageChanged
     } = props;
     return <div>
+        <div>
+            <UserFormikForm onFilterChanged={props.onFilterChanged}/>
+        </div>
         <Pagination
             currentPage={currentPage}
             onPageChanged={onPageChanged}

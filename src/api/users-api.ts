@@ -3,8 +3,9 @@ import {profileAPI} from "./profile-api";
 import {ResponseType} from './api';
 
 export const usersAPI = {
-    getUsers(currentPage = 1, pageSize = 10) {
-        return instance.get<GetUsersType>(`users?page=${currentPage}&count=${pageSize}`)
+    getUsers(currentPage = 1, pageSize = 10, term: string = '', friend: null | boolean = null) {
+        return instance.get<GetUsersType>
+        (`users?page=${currentPage}&count=${pageSize}&term=${term}` + (friend === null ? '' : `&friend=${friend}`))
             .then(response => {
                 return response.data;
             });
