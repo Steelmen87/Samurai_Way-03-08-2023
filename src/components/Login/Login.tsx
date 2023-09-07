@@ -2,7 +2,7 @@ import React from 'react';
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {Input} from "../common/FormsControls/FormsControls";
 import {requiredField} from "./../../utils/validators/validators";
-import {connect} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {login} from "../../redux/auth-reducer";
 import {Redirect} from "react-router-dom";
 import style from './../common/FormsControls/FormsControls.module.css'
@@ -43,30 +43,23 @@ type loginOwnProps = {
     captchaUrl: string | null
 }
 
-type mapStateToPropsType = {
-    captchaUrl: string | null
-    isAuth: boolean
-}
-type mapDispatchPropsType = {
-    setLoginData: (email: string, password: string, rememberMe: boolean, captcha: string) => void
-}
+
 type formDataType = {
     email: string, password: string, rememberMe: boolean, captcha: any
 }
-const Login: React.FC<mapStateToPropsType & mapDispatchPropsType> = (props) => {
+const Login: React.FC = (props) => {
+    const captchaUrl = useSelector<AppStateType, string | null>(state => state.auth.captchaUrl)
+    const isAuth = useSelector<AppStateType, boolean>(state => state.auth.isAuth)
+    const dispatch = useDispatch();
     const onSubmit = (formData: formDataType) => {
-        props.setLoginData(formData.email, formData.password, formData.rememberMe, formData.captcha)
+        //@ts-ignore
+        dispatch(login(formData.email, formData.password, formData.rememberMe, formData.captcha))
     }
-    if (props.isAuth) return <Redirect to={'/profile'}/>
+    if (isAuth) return <Redirect to={'/profile'}/>
     return <div>
         <h1>LOGIN</h1>
-        <LoginReduxForm onSubmit={onSubmit} captchaUrl={props.captchaUrl}/>
+        <LoginReduxForm onSubmit={onSubmit} captchaUrl={captchaUrl}/>
     </div>
 }
-const mapStateToProps = (state: AppStateType) => {
-    return {
-        captchaUrl: state.auth.captchaUrl,
-        isAuth: state.auth.isAuth
-    }
-}
-export default connect(mapStateToProps, {setLoginData: login})(Login);
+
+export default Login;

@@ -116,6 +116,7 @@ export const unfollow = (userId: number) => async (dispatch: any) => {
 }
 
 export default usersReducer;
+
 export type followSuccessType = ReturnType<typeof followSuccess>
 export type unfollowSuccessType = ReturnType<typeof unfollowSuccess>
 export type setUsersType = ReturnType<typeof setUsers>

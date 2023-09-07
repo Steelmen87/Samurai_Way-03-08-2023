@@ -10,6 +10,7 @@ import {initializeApp} from "./redux/app-reducer";
 import Preloader from "./components/common/Preloader/Preloader";
 import {AppStateType} from './redux/redux-store'
 import {withSuspense} from "./hoc/withSuspense";
+import {PageUsers} from "./components/Users/PageUsers";
 
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
@@ -51,7 +52,7 @@ class App extends React.Component<MapPropsType & DispatchPropsType, any> {
                         <Route exact path='/' render={() => <Redirect to={'/profile'}/>}/>
                         <Route path='/dialogs' render={withSuspense(DialogsContainer)}/>
                         <Route path='/profile/:userId?' render={withSuspense(ProfileContainer)}/>
-                        <Route path='/users' render={() => <UsersContainer/>}/>
+                        <Route path='/users' render={() => <PageUsers/>}/>
                         <Route path='/login' render={withSuspense(LoginPage)}/>
                         <Route path='*' render={() => <div>Page 404</div>}/>
                     </Switch>
