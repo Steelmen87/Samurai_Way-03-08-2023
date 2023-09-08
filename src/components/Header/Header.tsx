@@ -1,24 +1,29 @@
 import React from 'react';
 import s from './Header.module.css';
 import {NavLink} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {AppStateType} from "../../redux/redux-store";
+import {logOut} from "../../redux/auth-reducer";
+import {Avatar, Button} from "antd";
+import {UserOutlined} from "@ant-design/icons";
 
-export type MapPropsType = {
-    isAuth: boolean
-    login: string | null
-}
-export type DispatchPropsType = {
-    logOut: () => void
-}
-const Header: React.FC<MapPropsType & DispatchPropsType> = (props) => {
+
+const HeaderCom: React.FC = () => {
+    const isAuth = useSelector<AppStateType,boolean>(state => state.auth.isAuth)
+    const login = useSelector<AppStateType,string | null>(state => state.auth.login)
+    const dispatch = useDispatch();
+    const HeaderLogout = () =>{
+        //@ts-ignore
+        dispatch(logOut())
+    }
     return <header className={s.header}>
-        <img src='https://www.freelogodesign.org/Content/img/logo-ex-7.png' alt={'img'}/>
-
+        <Avatar style={{backgroundColor: '#87d068'}} icon={<UserOutlined/>}/>
         <div className={s.loginBlock}>
-            {props.isAuth ?
-                <div>{props.login} - <button onClick={props.logOut}>Log Out</button></div>
-                : <NavLink to={'/login'}>Login</NavLink>}
+            {isAuth ?
+                <div style={{color:'white'}}>{login}  <Button onClick={HeaderLogout} style={{marginLeft:'20px'}}>Log Out</Button></div>
+                : <Button style={{marginLeft:'20px'}}><NavLink to={'/login'}>Login</NavLink></Button>}
         </div>
     </header>
 }
 
-export default Header;
+export default HeaderCom;

@@ -1,8 +1,7 @@
 import React from 'react';
 import './App.css';
-import Navbar from './components/Navbar/Navbar';
-import {Redirect, Route, Switch, withRouter} from "react-router-dom";
-import HeaderContainer from "./components/Header/HeaderContainer";
+import 'antd/dist/antd.css'
+import {NavLink, Redirect, Route, Switch, withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import {compose} from "redux";
 import {initializeApp} from "./redux/app-reducer";
@@ -10,6 +9,34 @@ import Preloader from "./components/common/Preloader/Preloader";
 import {AppStateType} from './redux/redux-store'
 import {withSuspense} from "./hoc/withSuspense";
 import {PageUsers} from "./components/Users/PageUsers";
+import {LaptopOutlined, NotificationOutlined, UserOutlined} from '@ant-design/icons';
+
+import {Breadcrumb, Col, Layout, Menu, MenuProps, Row} from 'antd';
+import s from "./components/Navbar/Navbar.module.css";
+import HeaderCom from "./components/Header/Header";
+
+const {Content, Footer, Sider,Header} = Layout;
+
+
+const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
+    (icon, index) => {
+        const key = String(index + 1);
+
+        return {
+            key: `sub${key}`,
+            icon: React.createElement(icon),
+            label: `subnav ${key}`,
+
+            children: new Array(4).fill(null).map((_, j) => {
+                const subKey = index * 4 + j + 1;
+                return {
+                    key: subKey,
+                    label: `option${subKey}`,
+                };
+            }),
+        };
+    },
+);
 
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
@@ -43,7 +70,83 @@ class App extends React.Component<MapPropsType & DispatchPropsType, any> {
             return <Preloader/>
         }
         return (
-            <div className='app-wrapper'>
+            <Layout>
+                <Header className="header">
+                    <div className="logo"/>
+                    <Row>
+                        <Col span={16}>
+                            <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
+                                <Menu.Item key={'1'}>
+                                    <NavLink to="/profile"
+                                             activeClassName={s.activeLink}>Developer
+                                    </NavLink>
+                                </Menu.Item>
+                            </Menu>
+                        </Col>
+                        <Col span={4}>
+                            <HeaderCom/>
+                        </Col>
+                    </Row>
+                </Header>
+                <Content style={{padding: '0 50px'}}>
+                    <Breadcrumb style={{margin: '16px 0'}}>
+                        <Breadcrumb.Item>Home</Breadcrumb.Item>
+                        <Breadcrumb.Item>List</Breadcrumb.Item>
+                        <Breadcrumb.Item>App</Breadcrumb.Item>
+                    </Breadcrumb>
+                    <Layout className="site-layout-background" style={{padding: '24px 0'}}>
+                        <Sider className="site-layout-background" width={200}>
+                            <Menu
+                                mode="inline"
+                                defaultSelectedKeys={['1']}
+                                defaultOpenKeys={['sub1']}
+                                style={{height: '100%'}}
+                            ><Menu.SubMenu key={'sub1'} icon={<UserOutlined/>} title={"My profile"}>
+                                <Menu.Item key={'1'}>
+                                    <NavLink to="/profile"
+                                             activeClassName={s.activeLink}>Developer
+                                    </NavLink>
+                                </Menu.Item>
+                                <Menu.Item key={'2'}>
+                                    <NavLink to="/dialogs"
+                                             activeClassName={s.activeLink}>Message
+                                    </NavLink>
+                                </Menu.Item>
+                                <Menu.Item key={'3'}>
+                                    <NavLink to="#"
+                                             activeClassName={s.activeLink}>item
+                                    </NavLink>
+                                </Menu.Item>
+                            </Menu.SubMenu>
+                                <Menu.SubMenu key={'sub2'} icon={<LaptopOutlined/>} title={"Developers"}>
+                                    <Menu.Item key={'1'}>
+                                        <NavLink to="/users"
+                                                 activeClassName={s.activeLink}>users
+                                        </NavLink>
+                                    </Menu.Item>
+                                    <Menu.Item key={'4'}>
+                                        <NavLink to="#"
+                                                 activeClassName={s.activeLink}>item
+                                        </NavLink>
+                                    </Menu.Item>
+                                </Menu.SubMenu>
+                            </Menu>
+                        </Sider>
+                        <Content style={{padding: '0 24px', minHeight: 280}}>
+                            <Switch>
+                                <Route exact path='/' render={() => <Redirect to={'/profile'}/>}/>
+                                <Route path='/dialogs' render={withSuspense(DialogsContainer)}/>
+                                <Route path='/profile/:userId?' render={withSuspense(ProfileContainer)}/>
+                                <Route path='/users' render={() => <PageUsers/>}/>
+                                <Route path='/login' render={withSuspense(LoginPage)}/>
+                                <Route path='*' render={() => <div>Page 404</div>}/>
+                            </Switch>
+                        </Content>
+                    </Layout>
+                </Content>
+                <Footer style={{textAlign: 'center'}}>Samurai Social Network ©2022</Footer>
+            </Layout>
+            /*<div className='app-wrapper'>
                 <HeaderContainer/>
                 <Navbar/>
                 <div className='app-wrapper-content'>
@@ -54,9 +157,10 @@ class App extends React.Component<MapPropsType & DispatchPropsType, any> {
                         <Route path='/users' render={() => <PageUsers/>}/>
                         <Route path='/login' render={withSuspense(LoginPage)}/>
                         <Route path='*' render={() => <div>Page 404</div>}/>
+
                     </Switch>
                 </div>
-            </div>
+            </div>*/
         )
     }
 }
@@ -69,11 +173,4 @@ const MainApp = compose<React.ComponentType>(
     withRouter,
     connect(mapStateToProps, {initializeApp}))(App);
 
-/*const SamuraiJSApp: React.FC = () => {
-    return <HashRouter>
-        <Provider store={store}>
-            <MainApp/>
-        </Provider>
-    </HashRouter>
-}*/
 export default MainApp;

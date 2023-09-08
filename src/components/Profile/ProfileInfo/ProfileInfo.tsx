@@ -6,6 +6,7 @@ import userPhoto from './../../../assets/images/user.png'
 import ProfileReduxForm from "./ProfileDataForm";
 import {propsType} from './../Profile';
 import {profileType} from "../../../types/types";
+import {Button} from "antd";
 
 
 const ProfileInfo: React.FC<propsType> = ({profile, status, updateStatus, isOwner, savePhoto, saveProfile}) => {
@@ -52,7 +53,7 @@ export const ProfileData: React.FC<ProfileDataPropsType> = ({profile, isOwner, c
 
     return <div>
         {isOwner && <div>
-            <button onClick={callBack}>edit</button>
+            <Button onClick={callBack}>edit</Button>
         </div>}
         <div><b>Full name:</b> {profile.fullName}</div>
         <div><b>Looking for a job:</b> {profile.lookingForAJob ? "yes" : 'no'}</div>
