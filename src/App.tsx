@@ -9,37 +9,18 @@ import Preloader from "./components/common/Preloader/Preloader";
 import {AppStateType} from './redux/redux-store'
 import {withSuspense} from "./hoc/withSuspense";
 import {PageUsers} from "./components/Users/PageUsers";
-import {LaptopOutlined, NotificationOutlined, UserOutlined} from '@ant-design/icons';
+import {LaptopOutlined, UserOutlined} from '@ant-design/icons';
 
-import {Breadcrumb, Col, Layout, Menu, MenuProps, Row} from 'antd';
+import {Breadcrumb, Col, Layout, Menu, Row} from 'antd';
 import s from "./components/Navbar/Navbar.module.css";
 import HeaderCom from "./components/Header/Header";
 
-const {Content, Footer, Sider,Header} = Layout;
+const {Content, Footer, Sider, Header} = Layout;
 
-
-const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
-    (icon, index) => {
-        const key = String(index + 1);
-
-        return {
-            key: `sub${key}`,
-            icon: React.createElement(icon),
-            label: `subnav ${key}`,
-
-            children: new Array(4).fill(null).map((_, j) => {
-                const subKey = index * 4 + j + 1;
-                return {
-                    key: subKey,
-                    label: `option${subKey}`,
-                };
-            }),
-        };
-    },
-);
 
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
+const ChatPage = React.lazy(() => import('./pages/Chat/ChatPage'));
 
 const LoginPage = React.lazy(() => import('./components/Login/Login'));
 //100 done
@@ -125,8 +106,8 @@ class App extends React.Component<MapPropsType & DispatchPropsType, any> {
                                         </NavLink>
                                     </Menu.Item>
                                     <Menu.Item key={'4'}>
-                                        <NavLink to="#"
-                                                 activeClassName={s.activeLink}>item
+                                        <NavLink to="/chat"
+                                                 activeClassName={s.activeLink}>Chat
                                         </NavLink>
                                     </Menu.Item>
                                 </Menu.SubMenu>
@@ -139,6 +120,7 @@ class App extends React.Component<MapPropsType & DispatchPropsType, any> {
                                 <Route path='/profile/:userId?' render={withSuspense(ProfileContainer)}/>
                                 <Route path='/users' render={() => <PageUsers/>}/>
                                 <Route path='/login' render={withSuspense(LoginPage)}/>
+                                <Route path='/chat' render={withSuspense(ChatPage)}/>
                                 <Route path='*' render={() => <div>Page 404</div>}/>
                             </Switch>
                         </Content>
